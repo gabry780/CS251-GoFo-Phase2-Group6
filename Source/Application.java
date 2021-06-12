@@ -6,76 +6,48 @@ import Exceptions.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Application class handels all necessary and fundamental operations needed in the program
- */
 public class Application implements Verifier {
 
-    /**
-     * accounts attribute holds all the accounts in the program, whether admin, player or playground owner
-     */
     private ArrayList<Account> accounts;
-    /**
-     * unapprovedPlaygrounds attribute holds all the unapproved Playgrounds that the admin needs to approve
-     */
     private ArrayList<Playground> unapprovedPlaygrounds;
-    /**
-     * allPlaygrounds attribute hold all the playgrounds that exist in the GoFo program
-     */
     private ArrayList<Playground> allPlaygrounds;
 
-    /**
-     * Application constructor initiates the value of accounts, unapprovedPlaygrounds and allPlaygrounds. As well as adding the administrator
-     */
-    public Application() {
+    public Application() 
+    {
         accounts = new ArrayList<>();
         unapprovedPlaygrounds = new ArrayList<>();
         allPlaygrounds = new ArrayList<>();
         accounts.add(new Administrator(this));
     }
 
-    /**
-     * getUserChoice is responsibile for getting the user choice,
-     * and guarantees that the choice is between the min and max value that was passed by the menu
-     *
-     * @param min minimum value in the menu
-     * @param max maximam value in the menu
-     * @return userChoice which is between the min and max value
-     */
-    public int getUserChoice(int min, int max) {
+    public int getUserChoice(int min, int max) 
+    {
         Scanner input = new Scanner(System.in);
         int userChoice = min - 1;
         boolean flag = true;
-        while (flag) {
+        while (flag) 
+        {
             try {
                 userChoice = Integer.parseInt(input.nextLine());
-                while (userChoice < min || userChoice > max) {
+                while (userChoice < min || userChoice > max) 
+                {
                     System.out.println("Please enter a valid number:");
                     userChoice = Integer.parseInt(input.nextLine());
                 }
                 flag = false;
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) 
+            {
                 System.out.println("Please enter a valid digit");
             }
         }
         return userChoice;
     }
 
-    /**
-     * Administrator menu, displays all the admin menu options for the admin to choose from.
-     * It contains the following options:
-     * approving playground
-     * suspending playground
-     * detelting playground
-     * activating playground
-     * logging out.
-     * Depending on which choice, the menu calls the corresponding function to the choice selected.
-     *
-     * @param admin takes the current admin that the program is currently interacting with.
-     */
-    private void menu(Administrator admin) {
+    private void menu(Administrator admin) 
+    {
         boolean flag = true;
-        while (flag) {
+        while (flag) 
+        {
             Scanner input = new Scanner(System.in);
             System.out.println("===========================");
             System.out.println("Administrator Menu");
@@ -87,41 +59,30 @@ public class Application implements Verifier {
             System.out.println("[4] Activate Playground");
             System.out.println("[5] Log out");
             int userChoice = getUserChoice(1, 5);
-            if (userChoice == 1) {
+            if (userChoice == 1) 
+            {
                 approvePlayground(admin);
-            } else if (userChoice == 2) {
+            } else if (userChoice == 2) 
+            {
                 suspendPlayground(admin);
-            } else if (userChoice == 3) {
+            } else if (userChoice == 3) 
+            {
                 deletePlayground(admin);
-            } else if (userChoice == 4) {
+            } else if (userChoice == 4) 
+            {
                 activatePlayground(admin);
-            } else {
+            } else 
+            {
                 flag = false;
             }
         }
     }
 
-    /**
-     * PLayer menu, displays all the player menu options for the player to choose from.
-     * It contains the following options:
-     * view playgrounds
-     * book a playground
-     * creating a team
-     * Send invitation
-     * cancel booking
-     * edit player info
-     * modify team
-     * filter by time slot
-     * filter by location and date
-     * check Ewallet
-     * log out
-     * Depending on the user choice, it calls the appropriate function that corresponds to the choice.
-     *
-     * @param player takes the current player that the program is currenty interating with.
-     */
-    private void menu(Player player) {
+    private void menu(Player player) 
+    {
         boolean flag = true;
-        while (flag) {
+        while (flag) 
+        {
             Scanner input = new Scanner(System.in);
             System.out.println("===========================");
             System.out.println("Player Menu");
@@ -139,49 +100,48 @@ public class Application implements Verifier {
             System.out.println("[10] Check Ewallet");
             System.out.println("[11] Log out");
             int userChoice = getUserChoice(1, 11);
-            if (userChoice == 1) {
+            if (userChoice == 1) 
+            {
                 player.viewPlaygrounds(allPlaygrounds);
-            } else if (userChoice == 2) {
+            } else if (userChoice == 2) 
+            {
                 bookPlayground(player);
-            } else if (userChoice == 3) {
+            } else if (userChoice == 3) 
+            {
                 player.createTeam(this);
-            } else if (userChoice == 4) {
+            } else if (userChoice == 4) 
+            {
                 player.sendInvitation();
-            } else if (userChoice == 5) {
+            } else if (userChoice == 5) 
+            {
                 cancelBooking(player);
-            } else if (userChoice == 6) {
+            } else if (userChoice == 6) 
+            {
                 editProfile(player);
-            } else if (userChoice == 7) {
+            } else if (userChoice == 7) 
+            {
                 modifyTeam(player);
-            } else if (userChoice == 8) {
+            } else if (userChoice == 8) 
+            {
                 player.filterPlaygrounds(allPlaygrounds, "timeslot");
-            } else if (userChoice == 9) {
+            } else if (userChoice == 9) 
+            {
                 player.filterPlaygrounds(allPlaygrounds, "location");
-            } else if (userChoice == 10) {
+            } else if (userChoice == 10) 
+            {
                 player.checkEWallet();
-            } else {
+            } else 
+            {
                 flag = false;
             }
         }
     }
 
-    /**
-     * PLayground owner menu, displays all the PLayground menu options for the player owner to choose from.
-     * It contains the following options:
-     * view all playgrounds
-     * add new playground
-     * view pending playground requests
-     * view bookings
-     * view Ewallet
-     * edit profile
-     * log out
-     * Depending on the user choice, it calls the appropriate function that corresponds to the choice.
-     *
-     * @param playgroundOwner takes the current PLayground owner that the program is currenty interating with.
-     */
-    private void menu(PlaygroundOwner playgroundOwner) {
+    private void menu(PlaygroundOwner playgroundOwner) 
+    {
         boolean flag = true;
-        while (flag) {
+        while (flag) 
+        {
             Scanner input = new Scanner(System.in);
             System.out.println("===========================");
             System.out.println("Playground Owner Menu");
@@ -195,17 +155,23 @@ public class Application implements Verifier {
             System.out.println("[6] Edit Profile");
             System.out.println("[7] Log out");
             int userChoice = getUserChoice(1, 7);
-            if (userChoice == 1) {
+            if (userChoice == 1) 
+            {
                 viewAllPlaygrounds(playgroundOwner);
-            } else if (userChoice == 2) {
+            } else if (userChoice == 2) 
+            {
                 playgroundOwner.addPlayground(allPlaygrounds, unapprovedPlaygrounds);
-            } else if (userChoice == 3) {
+            } else if (userChoice == 3) 
+            {
                 playgroundOwner.viewPending();
-            } else if (userChoice == 4) {
+            } else if (userChoice == 4) 
+            {
                 viewBookings(playgroundOwner);
-            } else if (userChoice == 5) {
+            } else if (userChoice == 5) 
+            {
                 playgroundOwner.checkEWallet();
-            } else if (userChoice == 6) {
+            } else if (userChoice == 6) 
+            {
                 editProfile(playgroundOwner);
             } else {
                 flag = false;
@@ -213,46 +179,37 @@ public class Application implements Verifier {
         }
     }
 
-    /**
-     * displays all playground owners by calling the function toString()
-     */
-    private void displayPlaygroundOwners() {
+    private void displayPlaygroundOwners() 
+    {
         System.out.println("===========================");
         System.out.println("Playground Owners: ");
-        for (int i = 0; i < accounts.size(); i++) {
-            if (accounts.get(i) instanceof PlaygroundOwner) {
+        for (int i = 0; i < accounts.size(); i++) 
+        {
+            if (accounts.get(i) instanceof PlaygroundOwner) 
+            {
                 System.out.println('[' + String.valueOf(i + 1) + "] " + accounts.get(i));
             }
         }
     }
 
-    /**
-     * displays all players by calling the function toString()
-     */
-    private void displayPlayers() {
+    private void displayPlayers() 
+    {
         System.out.println("===========================");
         System.out.println("Players: ");
-        for (int i = 0; i < accounts.size(); i++) {
-            if (accounts.get(i) instanceof Player) {
+        for (int i = 0; i < accounts.size(); i++) 
+        {
+            if (accounts.get(i) instanceof Player) 
+            {
                 System.out.println('[' + String.valueOf(i + 1) + "] " + accounts.get(i));
             }
         }
     }
 
-    /**
-     * this holds the main menu for the GoFo application, it has two options,
-     * the login option
-     * and the register option
-     * if user chooces to login, the menu takes his username and password and checks if it exists, if it does not,
-     * the menu displays that it does not exist
-     * in case it exists, the main menu calls the menu of the user based on his role(player,admin or playground owner)
-     * <p>
-     * if the user chooses to register, the main menu takes all his information and makes sure it does not conflict with
-     * other accounts, if it does, the main menu displays an error message based on the type of error that has happened.
-     */
-    public void launch() {
+    public void launch() 
+    {
         boolean flag = true;
-        while (flag) {
+        while (flag)  
+        {
             Scanner input = new Scanner(System.in);
             System.out.println("Welcome to GoFo Application");
             System.out.println("===========================");
@@ -261,40 +218,41 @@ public class Application implements Verifier {
             System.out.println("[3] Exit");
             System.out.println("===========================");
             int userChoice = getUserChoice(1, 3);
-            if (userChoice == 1) {
+            if (userChoice == 1) 
+            {
                 login();
-            } else if (userChoice == 2) {
+            } else if (userChoice == 2) 
+            {
                 register();
-            } else {
+            } else 
+            {
                 System.out.println("Exiting...");
                 flag = false;
             }
         }
     }
 
-    /**
-     * it overrides from the Verifier class
-     * verifyEmail takes an email as a parameter and returns true if and only if:
-     * the email is in correct format, meaning that the email is in the format of example@something.something
-     *
-     * @param email that email that the function needs to check criterion upon.
-     */
     @Override
-    public boolean verifyEmail(String email) {
+    public boolean verifyEmail(String email) 
+    {
         if (email.contains(" ")) return false;
         int countAt = 0, countDot = 0;
-        for (int i = 0; i < email.length(); i++) {
+        for (int i = 0; i < email.length(); i++) 
+        {
             int charAscii = (int) email.charAt(i);
             if (charAscii >= 65 && charAscii <= 90) continue;
             else if (charAscii >= 97 && charAscii <= 122) continue;
             else if (charAscii >= 48 && charAscii <= 57) continue;
             else if (email.charAt(i) == '-') continue;
-            else if (email.charAt(i) == '_') {
+            else if (email.charAt(i) == '_') 
+            {
                 if (countAt > 0) return false;
-            } else if (email.charAt(i) == '@') {
+            } else if (email.charAt(i) == '@') 
+            {
                 if (countAt > 0) return false;
                 else countAt++;
-            } else if (email.charAt(i) == '.') {
+            } else if (email.charAt(i) == '.') 
+            {
                 if (countAt == 0) return false;
                 else countDot++;
             } else return false;
@@ -303,77 +261,51 @@ public class Application implements Verifier {
         else return true;
     }
 
-    /**
-     * it overrides from the Verifier class
-     * verifyPassword takes a password and an account as a parameter and returns true if and only if the password matches the password of the account
-     *
-     * @param account  that wants to login
-     * @param password the password that the account entered
-     */
     @Override
-    public boolean verifyPassword(Account account, String password) {
+    public boolean verifyPassword(Account account, String password) 
+    {
         if (account.getPassword().equals(password)) return true;
         else return false;
     }
 
-    /**
-     * it overrides from the Verifier class
-     * checks if the number exists, if it does, it returns false
-     *
-     * @param number number to be verified to be unique.
-     * @throws NumberFormatException if the user entered unvalid input
-     */
     @Override
-    public boolean verifyNumber(String number) {
+    public boolean verifyNumber(String number) 
+    {
         if (number.length() < 11) return false;
-        try {
+        try 
+        {
             int phoneNumber = Integer.parseInt(number);
             if (phoneNumber < 0) return false;
-            for (int i = 0; i < accounts.size(); i++) {
+            for (int i = 0; i < accounts.size(); i++) 
+            {
                 if (accounts.get(i).getPhoneNumber().equals(number)) return false;
             }
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) 
+        {
             return false;
         }
         return true;
     }
-
-    /**
-     * it overrides from the Verifier class
-     * sends a confirmation number to the email in parameter
-     *
-     * @param email email that needs to recieve the confirmation number
-     */
+    
     @Override
-    public int sendConfirmation(String email) {
+    public int sendConfirmation(String email) 
+    {
         int confirmationNumber = (int) (Math.random() * 9999) + 1000;
         return confirmationNumber;
     }
 
-    /**
-     * it verifies username. returns index of username if found,
-     * if not found returns -2 if username length is below 1
-     * if not found but username is more than 1 then returns -1
-     *
-     * @param username username to be checked
-     */
-    public int verifyUserName(String username) {
-        for (int i = 0; i < accounts.size(); i++) {
+    public int verifyUserName(String username) 
+    {
+        for (int i = 0; i < accounts.size(); i++) 
+        {
             if (accounts.get(i).getUserName().equals(username)) return i;
         }
         if (username.length() < 1) return -2;
         return -1;
     }
 
-    /**
-     * login method, takes the username and password and throws exceptions if invalid
-     * if valid then it returns that it is valid
-     *
-     * @return usernameValid if the username is valid
-     * @throws InvalidUserName if username is not valid
-     * @throws InvalidPassword if password is not valid
-     */
-    public int loginUser() throws InvalidUserName, InvalidPassword {
+    public int loginUser() throws InvalidUserName, InvalidPassword 
+    {
         Scanner input = new Scanner(System.in);
         String username = null;
         String password = null;
@@ -382,7 +314,8 @@ public class Application implements Verifier {
         System.out.println("Password: ");
         password = input.nextLine();
         int userNameValid = verifyUserName(username);
-        if (userNameValid > -1) {
+        if (userNameValid > -1) 
+        {
             boolean passwordValid = verifyPassword(accounts.get(userNameValid), password);
             if (passwordValid) return userNameValid;
             else throw new InvalidPassword();
@@ -390,19 +323,8 @@ public class Application implements Verifier {
         throw new InvalidUserName();
     }
 
-    /**
-     * register method, resposible for taking user info such as username, password, email, phone number, confirmation number and address
-     * checks if the previous info is correct, if it is, it creates a new object based on the role,
-     * if not, throws the following exceptions
-     *
-     * @throws InvalidUserName     if username is not valid
-     * @throws InvalidPassword     if password is not valid
-     * @throws InvalidEmail        if email is not valid
-     * @throws InvalidNumber       if phone number is not valid
-     * @throws InvalidConfirmation if confirmation number is not valid
-     * @throws InvalidAddress      if address is not valid
-     */
-    public void registerUser() throws InvalidUserName, InvalidPassword, InvalidEmail, InvalidNumber, InvalidConfirmation, InvalidAddress {
+    public void registerUser() throws InvalidUserName, InvalidPassword, InvalidEmail, InvalidNumber, InvalidConfirmation, InvalidAddress 
+    {
         Scanner input = new Scanner(System.in);
         boolean flag = true;
         String userName = "";
@@ -412,7 +334,8 @@ public class Application implements Verifier {
         String confirmationNumber = "";
         String address = "";
         Account newAccount = null;
-        while (flag) {
+        while (flag) 
+        {
             System.out.println("What account would you like to register?");
             System.out.println("===========================");
             System.out.println("[1] Player");
@@ -422,15 +345,18 @@ public class Application implements Verifier {
 
             int userChoice = getUserChoice(1, 3);
 
-            if (userChoice == 1) {
+            if (userChoice == 1) 
+            {
                 newAccount = new Player(this);
-            } else if (userChoice == 2) {
+            } else if (userChoice == 2) 
+            {
                 newAccount = new PlaygroundOwner(this);
             } else {
                 System.out.println("Going back to main menu...");
                 flag = false;
             }
-            if (flag) {
+            if (flag) 
+            {
                 System.out.println("Please enter a username: ");
                 userName = input.nextLine();
                 if (verifyUserName(userName) != -1) throw new InvalidUserName();
@@ -440,8 +366,10 @@ public class Application implements Verifier {
                 System.out.println("Please enter an email: ");
                 email = input.nextLine().toLowerCase();
                 boolean duplicateEmail = false;
-                for (int i = 0; i < accounts.size(); i++) {
-                    if (accounts.get(i).getEmail().equals(email)) {
+                for (int i = 0; i < accounts.size(); i++)
+                {
+                    if (accounts.get(i).getEmail().equals(email)) 
+                    {
                         duplicateEmail = true;
                         break;
                     }
@@ -456,17 +384,22 @@ public class Application implements Verifier {
                     if (address.length() < 1) throw new InvalidAddress();
                 }
                 boolean confirmationFlag = true;
-                while (confirmationFlag) {
+                while (confirmationFlag) 
+                {
                     System.out.println("Please enter the confirmation number: ");
                     confirmationNumber = input.nextLine();
-                    try {
+                    try 
+                    {
                         int userConfirmationNumber = Integer.parseInt(confirmationNumber);
-                        if (userConfirmationNumber < 0) {
+                        if (userConfirmationNumber < 0) 
+                        {
                             System.out.println("Invalid confirmation number, please try again");
-                        } else {
+                        } else 
+                        {
                             confirmationFlag = false;
                         }
-                    } catch (NumberFormatException ex) {
+                    } catch (NumberFormatException ex) 
+                    {
                         System.out.println("Please enter a valid confirmation number");
                     }
                 }
@@ -479,23 +412,21 @@ public class Application implements Verifier {
         }
     }
 
-    /*
-    Wrapper functions below this comment
-    */
-
-    /**
-     * wrapper function for login functionality
-     */
-    public void login() {
+    public void login() 
+    {
         int currentUserIndex = -1;
-        try {
+        try 
+        {
             currentUserIndex = loginUser();
-        } catch (InvalidUserName ex) {
+        } catch (InvalidUserName ex) 
+        {
             System.out.println("Invalid username, please try again.");
-        } catch (InvalidPassword ex) {
+        } catch (InvalidPassword ex) 
+        {
             System.out.println("Invalid password, please try again.");
         }
-        if (currentUserIndex != -1) {
+        if (currentUserIndex != -1) 
+        {
             Account currentAccount = accounts.get(currentUserIndex);
             if (currentAccount instanceof Administrator) menu((Administrator) currentAccount);
             else if (currentAccount instanceof Player) menu((Player) currentAccount);
@@ -503,229 +434,225 @@ public class Application implements Verifier {
         }
     }
 
-    /**
-     * wrapper function for register functionality
-     */
-    public void register() {
-        try {
+    public void register() 
+    {
+        try 
+        {
             registerUser();
-        } catch (InvalidUserName ex) {
+        } catch (InvalidUserName ex) 
+        {
             System.out.println("Username already exists or is invalid, please try again.");
-        } catch (InvalidPassword ex) {
+        } catch (InvalidPassword ex) 
+        {
             System.out.println("Invalid password, please try again.");
-        } catch (InvalidEmail ex) {
+        } catch (InvalidEmail ex) 
+        {
             System.out.println("Invalid email, please try again.");
-        } catch (InvalidNumber ex) {
+        } catch (InvalidNumber ex) 
+        {
             System.out.println("Invalid number, please try again.");
-        } catch (InvalidConfirmation ex) {
+        } catch (InvalidConfirmation ex) 
+        {
             System.out.println("Invalid confirmation code, please try again.");
-        } catch (InvalidAddress ex) {
+        } catch (InvalidAddress ex) 
+        {
             System.out.println("Invalid address, please try again.");
         }
     }
 
-    /**
-     * wrapper function for view all playgrounds functionality
-     *
-     * @param playgroundOwner the PlaygroundOwner object performing the action
-     */
-    public void viewAllPlaygrounds(PlaygroundOwner playgroundOwner) {
+   
+    public void viewAllPlaygrounds(PlaygroundOwner playgroundOwner) 
+    {
         int playgroundsCount = playgroundOwner.getPlaygrounds().size();
         System.out.println("===========================");
         System.out.println("[0] Cancel");
-        for (int i = 0; i < playgroundsCount; i++) {
+        for (int i = 0; i < playgroundsCount; i++) 
+        {
             System.out.println('[' + String.valueOf(i + 1) + "] " + playgroundOwner.getPlaygrounds().get(i).getPlaygroundName());
         }
         System.out.println("===========================");
         System.out.println("Please choose a playground to modify or enter 0 to return to main menu: ");
         int chosenPlayground = getUserChoice(0, playgroundsCount);
-        if (chosenPlayground != 0) {
+        if (chosenPlayground != 0) 
+        {
             playgroundOwner.updatePlayground(allPlaygrounds, unapprovedPlaygrounds, playgroundOwner.getPlaygrounds().get(chosenPlayground - 1));
         }
     }
 
-    /**
-     * wrapper function for view all bookings for a specific playground functionality
-     *
-     * @param playgroundOwner the PlaygroundOwner object performing the action
-     */
-    public void viewBookings(PlaygroundOwner playgroundOwner) {
+   
+    public void viewBookings(PlaygroundOwner playgroundOwner) 
+    {
         int playgroundsCount = playgroundOwner.getPlaygrounds().size();
         System.out.println("===========================");
         System.out.println("[0] Cancel");
-        for (int i = 0; i < playgroundsCount; i++) {
+        for (int i = 0; i < playgroundsCount; i++) 
+        {
             System.out.println('[' + String.valueOf(i + 1) + "] " + playgroundOwner.getPlaygrounds().get(i).getPlaygroundName());
         }
         System.out.println("===========================");
         System.out.println("Please choose a playground to view its bookings or enter 0 to return to main menu: ");
         int chosenPlayground = getUserChoice(0, playgroundsCount);
-        if (chosenPlayground != 0) {
+        if (chosenPlayground != 0) 
+        {
             playgroundOwner.viewBookings(playgroundOwner.getPlaygrounds().get(chosenPlayground - 1));
         }
     }
 
-    /**
-     * wrapper function for editing profile functionality
-     *
-     * @param account the Account object performing the action
-     */
-    public void editProfile(Account account) {
+    public void editProfile(Account account) 
+    {
         try {
             account.updateProfile(accounts);
-        } catch (InvalidPassword ex) {
+        } catch (InvalidPassword ex) 
+        {
             System.out.println("Invalid password, please try again.");
-        } catch (InvalidEmail ex) {
+        } catch (InvalidEmail ex)
+        {
             System.out.println("Invalid email, please try again.");
-        } catch (InvalidNumber ex) {
+        } catch (InvalidNumber ex) 
+        {
             System.out.println("Invalid number, please try again.");
-        } catch (InvalidAddress ex) {
+        } catch (InvalidAddress ex) 
+        {
             System.out.println("Invalid address, please try again.");
         }
     }
 
-    /**
-     * wrapper function for booking playground functionality
-     *
-     * @param player the Account object performing the action
-     */
-    public void bookPlayground(Player player) {
+    public void bookPlayground(Player player)
+    {
         System.out.println("===========================");
         System.out.println("[0] Cancel");
         player.viewPlaygrounds(allPlaygrounds);
         System.out.println("===========================");
         System.out.println("Please choose a number:");
         int userChoice = getUserChoice(0, allPlaygrounds.size());
-        if (userChoice != 0) {
-            try {
+        if (userChoice != 0)
+        {
+            try 
+            {
                 int originalBookings = allPlaygrounds.get(userChoice - 1).getBookings().size();
                 player.bookPlayground(player, allPlaygrounds.get(userChoice - 1));
                 int afterBooking = allPlaygrounds.get(userChoice - 1).getBookings().size();
-                if (afterBooking > originalBookings) {
+                if (afterBooking > originalBookings) 
+                {
                     System.out.println("Booking done");
-                } else {
+                } else 
+                {
                     System.out.println("Booking aborted");
                 }
-            } catch (InsufficientBalance ex) {
+            } catch (InsufficientBalance ex) 
+            {
                 System.out.println("Your balance is insufficient for the booking.");
-            } catch (PlaygroundUnavailable ex) {
+            } catch (PlaygroundUnavailable ex)
+            {
                 System.out.println("The time slot you picked is unavailable for booking");
             }
         }
     }
 
-    /**
-     * wrapper function for cancel booking functionality
-     *
-     * @param player the Account object performing the action
-     */
-    public void cancelBooking(Player player) {
+    public void cancelBooking(Player player) 
+    {
         System.out.println("===========================");
         System.out.println("[0] Cancel");
-        for (int i = 0; i < player.getPlayerBookings().size(); i++) {
+        for (int i = 0; i < player.getPlayerBookings().size(); i++) 
+        {
             System.out.println('[' + String.valueOf(i + 1) + "] " + player.getPlayerBookings().get(i));
         }
         System.out.println("===========================");
         System.out.println("Please choose a number:");
         int userChoice = getUserChoice(0, player.getPlayerBookings().size());
-        if (userChoice != 0) {
+        if (userChoice != 0) 
+        {
             player.cancelBooking(player.getPlayerBookings().get(userChoice - 1));
         }
     }
 
-    /**
-     * wrapper function for modifying a team functionality
-     *
-     * @param player the Account object performing the action
-     */
-    public void modifyTeam(Player player) {
+    public void modifyTeam(Player player)
+    {
         Team modifyTeam = player.pickTeam();
-        if (modifyTeam != null) {
-            try {
+        if (modifyTeam != null) 
+        {
+            try
+            {
                 player.modifyTeam(modifyTeam);
-            } catch (InvalidEmail ex) {
+            } catch (InvalidEmail ex) 
+            {
                 System.out.println("Invalid email entered");
             }
         }
     }
 
-    /**
-     * wrapper function for approving a playground functionality
-     *
-     * @param admin the Account object performing the action
-     */
-    public void approvePlayground(Administrator admin) {
+    public void approvePlayground(Administrator admin)
+    {
         int counter = 1;
         System.out.println("Displaying all unapproved playgrounds:");
         System.out.println("[0] Cancel");
-        for (Playground playground : unapprovedPlaygrounds) {
+        for (Playground playground : unapprovedPlaygrounds)
+        {
             System.out.println("[" + String.valueOf(counter) + "] " + playground.getPlaygroundName());
             counter++;
         }
         int approvedPlaygroundIndex = getUserChoice(0, unapprovedPlaygrounds.size());
-        if (approvedPlaygroundIndex != 0) {
+        if (approvedPlaygroundIndex != 0)
+        {
             boolean approved = admin.approvePlayground(unapprovedPlaygrounds.get(approvedPlaygroundIndex - 1));
-            if (approved) {
+            if (approved) 
+            {
                 allPlaygrounds.add(unapprovedPlaygrounds.get(approvedPlaygroundIndex - 1));
                 unapprovedPlaygrounds.remove(approvedPlaygroundIndex - 1);
                 System.out.println("Playground approved");
-            } else {
+            } else 
+            {
                 System.out.println("Playground status not changed");
             }
         }
     }
 
-    /**
-     * wrapper function for suspending a playground functionality
-     *
-     * @param admin the Account object performing the action
-     */
-    public void suspendPlayground(Administrator admin) {
+    public void suspendPlayground(Administrator admin) 
+    {
         System.out.println("===========================");
         System.out.println("[0] Cancel");
-        for (int i = 0; i < allPlaygrounds.size(); i++) {
+        for (int i = 0; i < allPlaygrounds.size(); i++)
+        {
             System.out.println('[' + String.valueOf(i + 1) + "] " + allPlaygrounds.get(i));
         }
         System.out.println("Choose a playground to suspend: ");
         int userChoice = getUserChoice(0, allPlaygrounds.size());
-        if (userChoice != 0) {
+        if (userChoice != 0) 
+        {
             admin.suspendPlayground(allPlaygrounds.get(userChoice - 1));
             System.out.println("Playground suspended");
         }
     }
 
-    /**
-     * wrapper function for deleting a playground functionality
-     *
-     * @param admin the Account object performing the action
-     */
-    public void deletePlayground(Administrator admin) {
+    public void deletePlayground(Administrator admin) 
+    {
         System.out.println("===========================");
         System.out.println("[0] Cancel");
-        for (int i = 0; i < allPlaygrounds.size(); i++) {
+        for (int i = 0; i < allPlaygrounds.size(); i++) 
+        {
             System.out.println('[' + String.valueOf(i + 1) + "] " + allPlaygrounds.get(i).getPlaygroundName());
         }
         System.out.println("Choose a playground to delete: ");
         int userChoice = getUserChoice(0, allPlaygrounds.size());
-        if (userChoice != 0) {
+        if (userChoice != 0)
+        {
             admin.deletePlayground(allPlaygrounds, unapprovedPlaygrounds, allPlaygrounds.get(userChoice - 1));
             System.out.println("Playground deleted and all bookings refunded");
         }
     }
 
-    /**
-     * wrapper function for activating a playground functionality
-     *
-     * @param admin the Account object performing the action
-     */
-    public void activatePlayground(Administrator admin) {
+    public void activatePlayground(Administrator admin) 
+    {
         System.out.println("===========================");
         System.out.println("[0] Cancel");
-        for (int i = 0; i < allPlaygrounds.size(); i++) {
+        for (int i = 0; i < allPlaygrounds.size(); i++) 
+        {
             System.out.println('[' + String.valueOf(i + 1) + "] " + allPlaygrounds.get(i).getPlaygroundName());
         }
         System.out.println("Choose a playground to activate: ");
         int userChoice = getUserChoice(0, allPlaygrounds.size());
-        if (userChoice != 0) {
+        if (userChoice != 0) 
+        {
             admin.activatePlayground(allPlaygrounds.get(userChoice - 1));
             System.out.println("Playground activated");
         }
